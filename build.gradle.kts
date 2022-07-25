@@ -6,5 +6,5 @@ repositories {
 }
 
 dependencies {
-    project(":GrapeSDK")
+
 }
