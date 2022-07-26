@@ -26,9 +26,14 @@ public final class GrapeClock implements Clock {
     clockThread.start();
   }
 
-  protected void stop() {
+  protected void stop(Runnable callback) {
+    System.out.println("Stoping clock...");
     isRunning = false;
-    new Thread(() -> ThreadUtils.join(clockThread), "Join Thread").start();
+
+    new Thread(() -> {
+      ThreadUtils.join(clockThread);
+      callback.run();
+    }, "Join Thread").start();
   }
 
   private void loop() {

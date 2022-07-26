@@ -11,12 +11,10 @@ public final class GrapeOS implements Grape {
   private final GrapeClock clock;
   private final GrapeDesktop desktop;
 
-  protected volatile boolean isRunning = false;
-
   public GrapeOS() {
     screen = new Screen("GrapeOS", 1280, 720);
     clock = new GrapeClock(this);
-    desktop = new GrapeDesktop(this, screen.getWidth(), screen.getHeight(), 32);
+    desktop = new GrapeDesktop(this, screen.getWidth(), screen.getHeight(), 48);
   }
 
   public void start() {
@@ -36,7 +34,12 @@ public final class GrapeOS implements Grape {
 
   @Override
   public void shutdown(String message, int seconds) {
+    clock.stop(this::shutdown0);
+  }
 
+  private void shutdown0() {
+    System.out.println("Bye!");
+    System.exit(0);
   }
 
   @Override

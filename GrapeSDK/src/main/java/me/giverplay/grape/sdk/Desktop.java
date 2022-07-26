@@ -6,5 +6,6 @@ public interface Desktop {
 
   int getHeight();
 
-  int getTaskbarHeight();
+  Taskbar getTaskbar();
+
 }
