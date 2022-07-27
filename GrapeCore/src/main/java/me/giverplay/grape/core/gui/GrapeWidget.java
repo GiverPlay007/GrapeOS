@@ -6,17 +6,19 @@ import java.awt.Image;
 
 public class GrapeWidget implements Widget {
 
+  private final Runnable callback;
   private final Image icon;
   private final String title;
 
   private final int width;
   private final int height;
 
-  public GrapeWidget(String title, Image icon, int width, int height) {
+  public GrapeWidget(String title, Image icon, int width, int height, Runnable callback) {
     this.title = title;
     this.icon = icon;
     this.width = width;
     this.height = height;
+    this.callback = callback;
   }
 
   @Override
@@ -37,5 +39,9 @@ public class GrapeWidget implements Widget {
   @Override
   public int getHeight() {
     return height;
+  }
+
+  public Runnable getCallback() {
+    return callback;
   }
 }

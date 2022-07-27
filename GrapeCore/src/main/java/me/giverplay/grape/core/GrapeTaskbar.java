@@ -1,5 +1,6 @@
 package me.giverplay.grape.core;
 
+import me.giverplay.grape.core.gui.GrapeWidget;
 import me.giverplay.grape.sdk.Taskbar;
 import me.giverplay.grape.sdk.gui.Widget;
 
@@ -15,10 +16,17 @@ public class GrapeTaskbar implements Taskbar {
   private final int width;
   private final int height;
 
+  private final int widgetSize;
+  private final int widgetOrigin;
+
   public GrapeTaskbar(int width, int height) {
     this.width = width;
     this.height = height;
     this.widgets = new ArrayList<>();
+
+    widgetSize = (int) (height * 0.8);
+    widgetOrigin = (height - widgetSize) / 2;
+
   }
 
   public void draw(Graphics graphics) {
@@ -26,14 +34,20 @@ public class GrapeTaskbar implements Taskbar {
     graphics.fillRect(0, 0, width, height);
     graphics.setColor(Color.BLACK);
 
-    int widgetSize = (int) (height * 0.8);
-    int widgetOrigin = (height - widgetSize) / 2;
-
     for (int i = 0; i < widgets.size(); i++) {
       Widget widget = widgets.get(i);
       graphics.drawRect(i * height, 0, height, height);
       graphics.drawImage(widget.getIcon(), i * height + widgetOrigin, widgetOrigin, widgetSize, widgetSize, null);
     }
+  }
+
+  public void onMouseClick(int x, int y, int button) {
+    int index = x / height;
+
+    if(index >= widgets.size()) return;
+
+    GrapeWidget widget = (GrapeWidget) widgets.get(index);
+    widget.getCallback().run();
   }
 
   @Override

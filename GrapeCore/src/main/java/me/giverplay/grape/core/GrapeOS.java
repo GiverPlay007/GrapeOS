@@ -1,5 +1,7 @@
 package me.giverplay.grape.core;
 
+import me.giverplay.grape.core.resource.ResourceManager;
+import me.giverplay.grape.core.screen.InputHandler;
 import me.giverplay.grape.core.screen.Screen;
 import me.giverplay.grape.sdk.Clock;
 import me.giverplay.grape.sdk.Desktop;
@@ -10,15 +12,20 @@ public final class GrapeOS implements Grape {
 
   private final GrapeClock clock;
   private final GrapeDesktop desktop;
+  private final ResourceManager resourceManager;
+  private final InputHandler inputHandler;
 
   public GrapeOS() {
     screen = new Screen("GrapeOS", 1280, 720);
+    inputHandler = new InputHandler(this);
+    resourceManager = new ResourceManager(this);
     clock = new GrapeClock(this);
     desktop = new GrapeDesktop(this, screen.getWidth(), screen.getHeight(), 48);
   }
 
   public void start() {
     screen.getFrame().setVisible(true);
+    screen.getCanvas().addMouseListener(inputHandler);
     clock.start();
   }
 
@@ -34,6 +41,7 @@ public final class GrapeOS implements Grape {
 
   @Override
   public void shutdown(String message, int seconds) {
+    System.out.println("Shutting down: " + message);
     clock.stop(this::shutdown0);
   }
 
@@ -50,5 +58,9 @@ public final class GrapeOS implements Grape {
   @Override
   public Desktop getDesktop() {
     return desktop;
+  }
+
+  public ResourceManager getResourceManager() {
+    return resourceManager;
   }
 }
