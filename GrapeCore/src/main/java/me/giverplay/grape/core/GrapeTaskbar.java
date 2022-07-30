@@ -26,7 +26,6 @@ public class GrapeTaskbar implements Taskbar {
 
     widgetSize = (int) (height * 0.8);
     widgetOrigin = (height - widgetSize) / 2;
-
   }
 
   public void draw(Graphics graphics) {

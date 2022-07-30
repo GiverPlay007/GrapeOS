@@ -1,17 +1,23 @@
 package me.giverplay.grape.core;
 
+import me.giverplay.grape.core.application.GrapeApplication;
+import me.giverplay.grape.core.application.GrapeApplicationManager;
 import me.giverplay.grape.core.resource.ResourceManager;
 import me.giverplay.grape.core.screen.InputHandler;
 import me.giverplay.grape.core.screen.Screen;
 import me.giverplay.grape.sdk.Clock;
 import me.giverplay.grape.sdk.Desktop;
 import me.giverplay.grape.sdk.Grape;
+import me.giverplay.grape.sdk.gui.Window;
+
+import java.awt.Image;
 
 public final class GrapeOS implements Grape {
   private final Screen screen;
 
   private final GrapeClock clock;
   private final GrapeDesktop desktop;
+  private final GrapeApplicationManager applicationManager;
   private final ResourceManager resourceManager;
   private final InputHandler inputHandler;
 
@@ -21,6 +27,14 @@ public final class GrapeOS implements Grape {
     resourceManager = new ResourceManager(this);
     clock = new GrapeClock(this);
     desktop = new GrapeDesktop(this, screen.getWidth(), screen.getHeight(), 48);
+    applicationManager = new GrapeApplicationManager(this);
+
+    Image miguel = resourceManager.getImage("/miguel.jpeg");
+
+    GrapeApplication application = new GrapeApplication("Miguel");
+    Window window = desktop.createWindow(application, "Miguel: GrapeOS Edition", 500, 320);
+    window.setPosition(400, 280);
+    window.onDraw(g -> g.drawImage(miguel, 0, 0, window.getWidth(), window.getHeight(), null));
   }
 
   public void start() {
@@ -62,5 +76,9 @@ public final class GrapeOS implements Grape {
 
   public ResourceManager getResourceManager() {
     return resourceManager;
+  }
+
+  public GrapeApplicationManager getApplicationManager() {
+    return applicationManager;
   }
 }
